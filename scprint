@@ -1,0 +1,68 @@
+#!/bin/bash
+
+USERNAME=`whoami`  # change to your server user name if different to local
+TMPFILE=XXXtoprint.pdf  # be careful not to have this file in your home dir, it will be rewritten
+PRINTER=XXX  # change this to the name of your favorite printer
+SERVER=jove.macs.hw.ac.uk  # change the server
+
+# default settings: color, non-double-sided, all pages
+GRAY=''
+DOUBLE=''
+PAGERANGE=''
+
+function usage {
+    echo "Usage: $0 [-g] [-d] [-p X-Y] [-P printer] file1.pdf [file2.pdf ...]" >&2
+    echo "  -g = grayscale" >&2
+    echo "  -d = double sided (long edge)" >&2
+    echo "  -s = double sided (short edge)" >&2
+    echo "  -p - select page range" >&2
+    echo "  -P - override default printer" >&2
+    echo "Edit the script to set up your server ($SERVER), remote username (current: $USERNAME), preferred temp file name ($TMPFILE) and printer ($PRINTER)!" >&2
+    echo >&2
+    exit 1
+}
+
+while getopts "dgp:P:" OPT; do
+    case $OPT in
+        d)
+            DOUBLE='-o sides=two-sided-long-edge'
+        ;;
+        s)
+            DOUBLE='-o sides=two-sided-short-edge'
+        ;;
+        g)
+            GRAY='-o ColorModel=Gray'
+        ;;
+        p)
+            PAGERANGE="-o page-ranges=$OPTARG"
+        ;;
+        P)
+            PRINTER=$OPTARG
+        ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            usage
+        ;;
+  esac
+done
+shift $((OPTIND-1))
+
+# no arguments given
+if [ -z "$1" ]; then
+    usage
+fi
+
+# process all files
+for FILE in "$@"; do
+    # check for file existence
+    if [ '!' -f "$FILE" ]; then
+        echo "File not found: $FILE"
+        exit 2
+    fi
+    # copy the file over to the server
+    scp "$FILE" $USERNAME@$SERVER:/home/$USERNAME/$TMPFILE
+    # print it from there using lpr
+    ssh $USERNAME@$SERVER "lpr -P $PRINTER $DOUBLE $GRAY $PAGERANGE $TMPFILE; rm $TMPFILE"
+done
+
+

@@ -22,7 +22,7 @@ function usage {
     exit 1
 }
 
-while getopts "dgp:P:" OPT; do
+while getopts "dsgp:P:" OPT; do
     case $OPT in
         d)
             DOUBLE='-o sides=two-sided-long-edge'

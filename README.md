@@ -7,7 +7,7 @@ _A simple Bash script for remote printing_
 The script saves the file(s) to be printed on the server via `scp` 
 and runs printing from there using `lpr`.
 
-Works best with passwordless authentication (e.g. `ssh-agent`).
+Works best with passwordless authentication (e.g. [SSH keys](https://www.ssh.com/ssh/key/) and [`ssh-agent`](https://www.ssh.com/ssh/agent)).
 
 Installation
 ------------

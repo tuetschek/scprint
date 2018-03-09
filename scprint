@@ -1,8 +1,8 @@
 #!/bin/bash
 
-USERNAME=`whoami`  # change to your server user name if different to local
-TMPFILE=XXXtoprint.pdf  # be careful not to have this file in your home dir, it will be rewritten
-PRINTER=XXX  # change this to the name of your favorite printer
+USERNAME=`whoami`  # change to your server username if different from your local machine
+TMPFILE=XXXtoprint.pdf  # be careful NOT to have this file in your home dir, it will be overwritten!
+PRINTER=XXX  # change this to the name of your favorite printer (e.g. cps1152, r172 etc.)
 SERVER=jove.macs.hw.ac.uk  # change the server
 
 # default settings: color, non-double-sided, all pages

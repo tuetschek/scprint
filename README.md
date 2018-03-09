@@ -12,7 +12,7 @@ Works best with passwordless authentication (e.g. `ssh-agent`).
 Installation
 ------------
 
-1. Copy the [scprint](blob/master/scprint) file to your `~/bin/` (or anywhere in your `PATH`).
+1. Copy the [scprint](scprint) file to your `~/bin/` (or anywhere in your `PATH`).
 
 2. Edit the file to update your server, preferred printer name, user name etc.
 

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-USERNAME=`whoami`  # change to your server username if different from your local machine
-TMPFILE=XXXtoprint.pdf  # be careful NOT to have this file in your home dir, it will be overwritten!
-PRINTER=XXX  # change this to the name of your favorite printer (e.g. cps1152, r172 etc.)
+USERNAME=do8  # change to your server user name if different to local
+TMPFILE=XXXtoprint.pdf  # be careful not to have this file in your home dir, it will be rewritten
+PRINTER=r172 # change this to the name of your favorite printer
 SERVER=jove.macs.hw.ac.uk  # change the server
 
 # default settings: color, non-double-sided, all pages
@@ -14,7 +14,8 @@ function usage {
     echo "Usage: $0 [-g] [-d] [-p X-Y] [-P printer] file1.pdf [file2.pdf ...]" >&2
     echo "  -g = grayscale" >&2
     echo "  -d = double sided (long edge)" >&2
-    echo "  -s = double sided (short edge)" >&2
+    echo "  -D = double sided (short edge)" >&2
+    echo "  -s = force single-sided" >&2
     echo "  -p - select page range" >&2
     echo "  -P - override default printer" >&2
     echo "Edit the script to set up your server ($SERVER), remote username (current: $USERNAME), preferred temp file name ($TMPFILE) and printer ($PRINTER)!" >&2
@@ -22,13 +23,16 @@ function usage {
     exit 1
 }
 
-while getopts "dsgp:P:" OPT; do
+while getopts "dDsgp:P:" OPT; do
     case $OPT in
         d)
             DOUBLE='-o sides=two-sided-long-edge'
         ;;
-        s)
+        D)
             DOUBLE='-o sides=two-sided-short-edge'
+        ;;
+        s)
+            DOUBLE='-o sides=one-sided'
         ;;
         g)
             GRAY='-o ColorModel=Gray'
